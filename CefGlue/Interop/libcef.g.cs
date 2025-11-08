@@ -9,90 +9,6 @@ namespace Xilium.CefGlue.Interop
     
     internal static unsafe partial class libcef
     {
-        // CefExecuteProcess
-        [DllImport(libcef.DllName, EntryPoint = "cef_execute_process", CallingConvention = libcef.CEF_CALL)]
-        public static extern int execute_process(cef_main_args_t* args, cef_app_t* application, void* windows_sandbox_info);
-        
-        // CefInitialize
-        [DllImport(libcef.DllName, EntryPoint = "cef_initialize", CallingConvention = libcef.CEF_CALL)]
-        public static extern int initialize(cef_main_args_t* args, cef_settings_t* settings, cef_app_t* application, void* windows_sandbox_info);
-        
-        // CefGetExitCode
-        [DllImport(libcef.DllName, EntryPoint = "cef_get_exit_code", CallingConvention = libcef.CEF_CALL)]
-        public static extern int get_exit_code();
-        
-        // CefShutdown
-        [DllImport(libcef.DllName, EntryPoint = "cef_shutdown", CallingConvention = libcef.CEF_CALL)]
-        public static extern void shutdown();
-        
-        // CefDoMessageLoopWork
-        [DllImport(libcef.DllName, EntryPoint = "cef_do_message_loop_work", CallingConvention = libcef.CEF_CALL)]
-        public static extern void do_message_loop_work();
-        
-        // CefRunMessageLoop
-        [DllImport(libcef.DllName, EntryPoint = "cef_run_message_loop", CallingConvention = libcef.CEF_CALL)]
-        public static extern void run_message_loop();
-        
-        // CefQuitMessageLoop
-        [DllImport(libcef.DllName, EntryPoint = "cef_quit_message_loop", CallingConvention = libcef.CEF_CALL)]
-        public static extern void quit_message_loop();
-        
-        // CefCrashReportingEnabled
-        [DllImport(libcef.DllName, EntryPoint = "cef_crash_reporting_enabled", CallingConvention = libcef.CEF_CALL)]
-        public static extern int crash_reporting_enabled();
-        
-        // CefSetCrashKeyValue
-        [DllImport(libcef.DllName, EntryPoint = "cef_set_crash_key_value", CallingConvention = libcef.CEF_CALL)]
-        public static extern void set_crash_key_value(cef_string_t* key, cef_string_t* value);
-        
-        // CefCreateDirectory
-        [DllImport(libcef.DllName, EntryPoint = "cef_create_directory", CallingConvention = libcef.CEF_CALL)]
-        public static extern int create_directory(cef_string_t* full_path);
-        
-        // CefGetTempDirectory
-        [DllImport(libcef.DllName, EntryPoint = "cef_get_temp_directory", CallingConvention = libcef.CEF_CALL)]
-        public static extern int get_temp_directory(cef_string_t* temp_dir);
-        
-        // CefCreateNewTempDirectory
-        [DllImport(libcef.DllName, EntryPoint = "cef_create_new_temp_directory", CallingConvention = libcef.CEF_CALL)]
-        public static extern int create_new_temp_directory(cef_string_t* prefix, cef_string_t* new_temp_path);
-        
-        // CefCreateTempDirectoryInDirectory
-        [DllImport(libcef.DllName, EntryPoint = "cef_create_temp_directory_in_directory", CallingConvention = libcef.CEF_CALL)]
-        public static extern int create_temp_directory_in_directory(cef_string_t* base_dir, cef_string_t* prefix, cef_string_t* new_dir);
-        
-        // CefDirectoryExists
-        [DllImport(libcef.DllName, EntryPoint = "cef_directory_exists", CallingConvention = libcef.CEF_CALL)]
-        public static extern int directory_exists(cef_string_t* path);
-        
-        // CefDeleteFile
-        [DllImport(libcef.DllName, EntryPoint = "cef_delete_file", CallingConvention = libcef.CEF_CALL)]
-        public static extern int delete_file(cef_string_t* path, int recursive);
-        
-        // CefZipDirectory
-        [DllImport(libcef.DllName, EntryPoint = "cef_zip_directory", CallingConvention = libcef.CEF_CALL)]
-        public static extern int zip_directory(cef_string_t* src_dir, cef_string_t* dest_file, int include_hidden_files);
-        
-        // CefLoadCRLSetsFile
-        [DllImport(libcef.DllName, EntryPoint = "cef_load_crlsets_file", CallingConvention = libcef.CEF_CALL)]
-        public static extern void load_crlsets_file(cef_string_t* path);
-        
-        // CefIsRTL
-        [DllImport(libcef.DllName, EntryPoint = "cef_is_rtl", CallingConvention = libcef.CEF_CALL)]
-        public static extern int is_rtl();
-        
-        // CefAddCrossOriginWhitelistEntry
-        [DllImport(libcef.DllName, EntryPoint = "cef_add_cross_origin_whitelist_entry", CallingConvention = libcef.CEF_CALL)]
-        public static extern int add_cross_origin_whitelist_entry(cef_string_t* source_origin, cef_string_t* target_protocol, cef_string_t* target_domain, int allow_target_subdomains);
-        
-        // CefRemoveCrossOriginWhitelistEntry
-        [DllImport(libcef.DllName, EntryPoint = "cef_remove_cross_origin_whitelist_entry", CallingConvention = libcef.CEF_CALL)]
-        public static extern int remove_cross_origin_whitelist_entry(cef_string_t* source_origin, cef_string_t* target_protocol, cef_string_t* target_domain, int allow_target_subdomains);
-        
-        // CefClearCrossOriginWhitelist
-        [DllImport(libcef.DllName, EntryPoint = "cef_clear_cross_origin_whitelist", CallingConvention = libcef.CEF_CALL)]
-        public static extern int clear_cross_origin_whitelist();
-        
         // CefResolveURL
         [DllImport(libcef.DllName, EntryPoint = "cef_resolve_url", CallingConvention = libcef.CEF_CALL)]
         public static extern int resolve_url(cef_string_t* base_url, cef_string_t* relative_url, cef_string_t* resolved_url);
@@ -149,25 +65,53 @@ namespace Xilium.CefGlue.Interop
         [DllImport(libcef.DllName, EntryPoint = "cef_write_json", CallingConvention = libcef.CEF_CALL)]
         public static extern cef_string_userfree* write_json(cef_value_t* node, CefJsonWriterOptions options);
         
+        // CefIsRTL
+        [DllImport(libcef.DllName, EntryPoint = "cef_is_rtl", CallingConvention = libcef.CEF_CALL)]
+        public static extern int is_rtl();
+        
         // CefGetPath
         [DllImport(libcef.DllName, EntryPoint = "cef_get_path", CallingConvention = libcef.CEF_CALL)]
         public static extern int get_path(CefPathKey key, cef_string_t* path);
         
-        // CefLaunchProcess
-        [DllImport(libcef.DllName, EntryPoint = "cef_launch_process", CallingConvention = libcef.CEF_CALL)]
-        public static extern int launch_process(cef_command_line_t* command_line);
+        // CefExecuteProcess
+        [DllImport(libcef.DllName, EntryPoint = "cef_execute_process", CallingConvention = libcef.CEF_CALL)]
+        public static extern int execute_process(cef_main_args_t* args, cef_app_t* application, void* windows_sandbox_info);
         
-        // CefRegisterSchemeHandlerFactory
-        [DllImport(libcef.DllName, EntryPoint = "cef_register_scheme_handler_factory", CallingConvention = libcef.CEF_CALL)]
-        public static extern int register_scheme_handler_factory(cef_string_t* scheme_name, cef_string_t* domain_name, cef_scheme_handler_factory_t* factory);
+        // CefInitialize
+        [DllImport(libcef.DllName, EntryPoint = "cef_initialize", CallingConvention = libcef.CEF_CALL)]
+        public static extern int initialize(cef_main_args_t* args, cef_settings_t* settings, cef_app_t* application, void* windows_sandbox_info);
         
-        // CefClearSchemeHandlerFactories
-        [DllImport(libcef.DllName, EntryPoint = "cef_clear_scheme_handler_factories", CallingConvention = libcef.CEF_CALL)]
-        public static extern int clear_scheme_handler_factories();
+        // CefGetExitCode
+        [DllImport(libcef.DllName, EntryPoint = "cef_get_exit_code", CallingConvention = libcef.CEF_CALL)]
+        public static extern int get_exit_code();
+        
+        // CefShutdown
+        [DllImport(libcef.DllName, EntryPoint = "cef_shutdown", CallingConvention = libcef.CEF_CALL)]
+        public static extern void shutdown();
+        
+        // CefDoMessageLoopWork
+        [DllImport(libcef.DllName, EntryPoint = "cef_do_message_loop_work", CallingConvention = libcef.CEF_CALL)]
+        public static extern void do_message_loop_work();
+        
+        // CefRunMessageLoop
+        [DllImport(libcef.DllName, EntryPoint = "cef_run_message_loop", CallingConvention = libcef.CEF_CALL)]
+        public static extern void run_message_loop();
+        
+        // CefQuitMessageLoop
+        [DllImport(libcef.DllName, EntryPoint = "cef_quit_message_loop", CallingConvention = libcef.CEF_CALL)]
+        public static extern void quit_message_loop();
+        
+        // CefSetNestableTasksAllowed
+        [DllImport(libcef.DllName, EntryPoint = "cef_set_nestable_tasks_allowed", CallingConvention = libcef.CEF_CALL)]
+        public static extern void set_nestable_tasks_allowed(int allowed);
         
         // CefIsCertStatusError
         [DllImport(libcef.DllName, EntryPoint = "cef_is_cert_status_error", CallingConvention = libcef.CEF_CALL)]
         public static extern int is_cert_status_error(CefCertStatus status);
+        
+        // CefRegisterExtension
+        [DllImport(libcef.DllName, EntryPoint = "cef_register_extension", CallingConvention = libcef.CEF_CALL)]
+        public static extern int register_extension(cef_string_t* extension_name, cef_string_t* javascript_code, cef_v8handler_t* handler);
         
         // CefCurrentlyOn
         [DllImport(libcef.DllName, EntryPoint = "cef_currently_on", CallingConvention = libcef.CEF_CALL)]
@@ -181,6 +125,26 @@ namespace Xilium.CefGlue.Interop
         [DllImport(libcef.DllName, EntryPoint = "cef_post_delayed_task", CallingConvention = libcef.CEF_CALL)]
         public static extern int post_delayed_task(CefThreadId threadId, cef_task_t* task, long delay_ms);
         
+        // CefRegisterSchemeHandlerFactory
+        [DllImport(libcef.DllName, EntryPoint = "cef_register_scheme_handler_factory", CallingConvention = libcef.CEF_CALL)]
+        public static extern int register_scheme_handler_factory(cef_string_t* scheme_name, cef_string_t* domain_name, cef_scheme_handler_factory_t* factory);
+        
+        // CefClearSchemeHandlerFactories
+        [DllImport(libcef.DllName, EntryPoint = "cef_clear_scheme_handler_factories", CallingConvention = libcef.CEF_CALL)]
+        public static extern int clear_scheme_handler_factories();
+        
+        // CefLaunchProcess
+        [DllImport(libcef.DllName, EntryPoint = "cef_launch_process", CallingConvention = libcef.CEF_CALL)]
+        public static extern int launch_process(cef_command_line_t* command_line);
+        
+        // CefCrashReportingEnabled
+        [DllImport(libcef.DllName, EntryPoint = "cef_crash_reporting_enabled", CallingConvention = libcef.CEF_CALL)]
+        public static extern int crash_reporting_enabled();
+        
+        // CefSetCrashKeyValue
+        [DllImport(libcef.DllName, EntryPoint = "cef_set_crash_key_value", CallingConvention = libcef.CEF_CALL)]
+        public static extern void set_crash_key_value(cef_string_t* key, cef_string_t* value);
+        
         // CefBeginTracing
         [DllImport(libcef.DllName, EntryPoint = "cef_begin_tracing", CallingConvention = libcef.CEF_CALL)]
         public static extern int begin_tracing(cef_string_t* categories, cef_completion_callback_t* callback);
@@ -193,9 +157,49 @@ namespace Xilium.CefGlue.Interop
         [DllImport(libcef.DllName, EntryPoint = "cef_now_from_system_trace_time", CallingConvention = libcef.CEF_CALL)]
         public static extern long now_from_system_trace_time();
         
-        // CefRegisterExtension
-        [DllImport(libcef.DllName, EntryPoint = "cef_register_extension", CallingConvention = libcef.CEF_CALL)]
-        public static extern int register_extension(cef_string_t* extension_name, cef_string_t* javascript_code, cef_v8handler_t* handler);
+        // CefCreateDirectory
+        [DllImport(libcef.DllName, EntryPoint = "cef_create_directory", CallingConvention = libcef.CEF_CALL)]
+        public static extern int create_directory(cef_string_t* full_path);
+        
+        // CefGetTempDirectory
+        [DllImport(libcef.DllName, EntryPoint = "cef_get_temp_directory", CallingConvention = libcef.CEF_CALL)]
+        public static extern int get_temp_directory(cef_string_t* temp_dir);
+        
+        // CefCreateNewTempDirectory
+        [DllImport(libcef.DllName, EntryPoint = "cef_create_new_temp_directory", CallingConvention = libcef.CEF_CALL)]
+        public static extern int create_new_temp_directory(cef_string_t* prefix, cef_string_t* new_temp_path);
+        
+        // CefCreateTempDirectoryInDirectory
+        [DllImport(libcef.DllName, EntryPoint = "cef_create_temp_directory_in_directory", CallingConvention = libcef.CEF_CALL)]
+        public static extern int create_temp_directory_in_directory(cef_string_t* base_dir, cef_string_t* prefix, cef_string_t* new_dir);
+        
+        // CefDirectoryExists
+        [DllImport(libcef.DllName, EntryPoint = "cef_directory_exists", CallingConvention = libcef.CEF_CALL)]
+        public static extern int directory_exists(cef_string_t* path);
+        
+        // CefDeleteFile
+        [DllImport(libcef.DllName, EntryPoint = "cef_delete_file", CallingConvention = libcef.CEF_CALL)]
+        public static extern int delete_file(cef_string_t* path, int recursive);
+        
+        // CefZipDirectory
+        [DllImport(libcef.DllName, EntryPoint = "cef_zip_directory", CallingConvention = libcef.CEF_CALL)]
+        public static extern int zip_directory(cef_string_t* src_dir, cef_string_t* dest_file, int include_hidden_files);
+        
+        // CefLoadCRLSetsFile
+        [DllImport(libcef.DllName, EntryPoint = "cef_load_crlsets_file", CallingConvention = libcef.CEF_CALL)]
+        public static extern void load_crlsets_file(cef_string_t* path);
+        
+        // CefAddCrossOriginWhitelistEntry
+        [DllImport(libcef.DllName, EntryPoint = "cef_add_cross_origin_whitelist_entry", CallingConvention = libcef.CEF_CALL)]
+        public static extern int add_cross_origin_whitelist_entry(cef_string_t* source_origin, cef_string_t* target_protocol, cef_string_t* target_domain, int allow_target_subdomains);
+        
+        // CefRemoveCrossOriginWhitelistEntry
+        [DllImport(libcef.DllName, EntryPoint = "cef_remove_cross_origin_whitelist_entry", CallingConvention = libcef.CEF_CALL)]
+        public static extern int remove_cross_origin_whitelist_entry(cef_string_t* source_origin, cef_string_t* target_protocol, cef_string_t* target_domain, int allow_target_subdomains);
+        
+        // CefClearCrossOriginWhitelist
+        [DllImport(libcef.DllName, EntryPoint = "cef_clear_cross_origin_whitelist", CallingConvention = libcef.CEF_CALL)]
+        public static extern int clear_cross_origin_whitelist();
         
     }
 }

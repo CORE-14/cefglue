@@ -9,6 +9,7 @@ namespace Xilium.CefGlue.Interop
     [StructLayout(LayoutKind.Sequential, Pack = libcef.ALIGN)]
     internal unsafe struct cef_pdf_print_settings_t
     {
+        public nuint size;
         public int landscape;
         public int print_background;
         public double scale;

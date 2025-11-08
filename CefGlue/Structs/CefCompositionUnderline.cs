@@ -34,9 +34,10 @@
         /// </summary>
         public CefCompositionUnderlineStyle Style { get; set; }
 
-        internal cef_composition_underline_t ToNative()
+        internal unsafe cef_composition_underline_t ToNative()
         {
             cef_composition_underline_t result;
+            result.size = (nuint) sizeof(cef_composition_underline_t);
             result.range = new cef_range_t(Range.From, Range.To);
             result.color = Color.ToArgb();
             result.background_color = BackgroundColor.ToArgb();

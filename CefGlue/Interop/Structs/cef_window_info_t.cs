@@ -76,6 +76,7 @@ namespace Xilium.CefGlue.Interop
 
     internal unsafe struct cef_window_info_t_mac
     {
+        public nuint size;
         public cef_string_t window_name;
         public cef_rect_t bounds;
         public int hidden;
@@ -90,6 +91,7 @@ namespace Xilium.CefGlue.Interop
         public static cef_window_info_t_mac* Alloc()
         {
             var ptr = (cef_window_info_t_mac*)NativeMemory.AllocZeroed((nuint)sizeof(cef_window_info_t_mac));
+            ptr->size = (nuint)sizeof(cef_window_info_t_mac);
             return ptr;
         }
 

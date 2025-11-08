@@ -29,6 +29,7 @@ namespace Xilium.CefGlue.Interop
         internal delegate* unmanaged<cef_command_line_t*, cef_string_map*, void> _get_switches;
         internal delegate* unmanaged<cef_command_line_t*, cef_string_t*, void> _append_switch;
         internal delegate* unmanaged<cef_command_line_t*, cef_string_t*, cef_string_t*, void> _append_switch_with_value;
+        internal delegate* unmanaged<cef_command_line_t*, cef_string_t*, void> _remove_switch;
         internal delegate* unmanaged<cef_command_line_t*, int> _has_arguments;
         internal delegate* unmanaged<cef_command_line_t*, cef_string_list*, void> _get_arguments;
         internal delegate* unmanaged<cef_command_line_t*, cef_string_t*, void> _append_argument;
@@ -180,6 +181,13 @@ namespace Xilium.CefGlue.Interop
         public static void append_switch_with_value(cef_command_line_t* self, cef_string_t* name, cef_string_t* value)
         {
             self->_append_switch_with_value(self, name, value);
+        }
+        
+        // RemoveSwitch
+        
+        public static void remove_switch(cef_command_line_t* self, cef_string_t* name)
+        {
+            self->_remove_switch(self, name);
         }
         
         // HasArguments

@@ -11,7 +11,7 @@ import sys
 import time
 
 
-def read_file(name, normalize=True):
+def read_file(name: str, normalize=True) -> str:
   """ Read a file. """
   try:
     with open(name, 'r', encoding='utf-8') as f:

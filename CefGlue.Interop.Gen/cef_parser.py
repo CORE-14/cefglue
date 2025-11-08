@@ -12,7 +12,9 @@ import string
 import sys
 import textwrap
 import time
-
+from cef_util import create_preproc_windows
+from io import StringIO
+from collections import defaultdict
 
 def notify(msg):
   """ Display a message. """
@@ -377,6 +379,7 @@ _simpletypes = {
     'bool': ['int', '0'],
     'char': ['char', '0'],
     'char* const': ['char* const', 'NULL'],
+    'cef_window_handle_t': ['cef_window_handle_t', '0'],
     'cef_color_t': ['cef_color_t', '0'],
     'cef_json_parser_error_t': ['cef_json_parser_error_t', 'JSON_NO_ERROR'],
     'CefAudioParameters': ['cef_audio_parameters_t', 'CefAudioParameters()'],
@@ -554,13 +557,30 @@ class obj_header:
     """ Get the root directory. """
     return self.root_directory
 
-  def add_directory(self, directory, excluded_files=[]):
+  def add_directory(self, directory, api_version: int, excluded_files=[]):
     """ Add all header files from the specified directory. """
-    files = get_files(os.path.join(directory, '*.h'))
-    for file in files:
-      if len(excluded_files) == 0 or \
-          not os.path.split(file)[1] in excluded_files:
-        self.add_file(file)
+    files = set(get_files(os.path.join(directory, '*.h')))
+    for excl in excluded_files:
+      for f in files:
+        if f.endswith(excl):
+          files.remove(f)
+          break
+
+    preproc = create_preproc_windows(directory, api_version)
+    preproc.pass_through_comments = True
+    preproc.parse("\n".join((f"#include \"{file}\"" for file in files)))
+
+    #str_io = StringIO()
+    #preproc.write(str_io)
+    #open("processed.h", "w").write(str_io.getvalue())
+    grouped_by_file: dict[str, StringIO] = defaultdict(StringIO)
+    with open("processed.mine.h", "w") as test:
+      while tok := preproc.token():
+        if tok.source in files:
+          grouped_by_file[tok.source].write(tok.value)
+
+    for (file, contents) in grouped_by_file.items():
+      self.add_data(file, contents.getvalue())
 
   def add_file(self, filepath):
     """ Add a header file. """

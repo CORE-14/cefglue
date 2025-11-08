@@ -9,6 +9,7 @@ namespace Xilium.CefGlue.Interop
     [StructLayout(LayoutKind.Sequential, Pack = libcef.ALIGN)]
     internal unsafe struct cef_cookie_t
     {
+        public nuint size;
         public cef_string_t name;
         public cef_string_t value;
         public cef_string_t domain;
@@ -34,6 +35,7 @@ namespace Xilium.CefGlue.Interop
         public static cef_cookie_t* Alloc()
         {
             var ptr = (cef_cookie_t*)NativeMemory.AllocZeroed((UIntPtr)sizeof(cef_cookie_t));
+            ptr->size = (UIntPtr)sizeof(cef_cookie_t);
             return ptr;
         }
 

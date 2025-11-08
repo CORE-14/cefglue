@@ -18,6 +18,7 @@ namespace Xilium.CefGlue.Interop
         internal delegate* unmanaged<cef_preference_manager_t*, int, cef_dictionary_value_t*> _get_all_preferences;
         internal delegate* unmanaged<cef_preference_manager_t*, cef_string_t*, int> _can_set_preference;
         internal delegate* unmanaged<cef_preference_manager_t*, cef_string_t*, cef_value_t*, cef_string_t*, int> _set_preference;
+        internal delegate* unmanaged<cef_preference_manager_t*, cef_string_t*, cef_preference_observer_t*, cef_registration_t*> _add_preference_observer;
         internal delegate* unmanaged<cef_request_context_t*, cef_request_context_t*, int> _is_same;
         internal delegate* unmanaged<cef_request_context_t*, cef_request_context_t*, int> _is_sharing_with;
         internal delegate* unmanaged<cef_request_context_t*, int> _is_global;
@@ -35,6 +36,7 @@ namespace Xilium.CefGlue.Interop
         internal delegate* unmanaged<cef_request_context_t*, cef_string_t*, cef_string_t*, CefContentSettingTypes, cef_value_t*, void> _set_website_setting;
         internal delegate* unmanaged<cef_request_context_t*, cef_string_t*, cef_string_t*, CefContentSettingTypes, CefContentSettingValues> _get_content_setting;
         internal delegate* unmanaged<cef_request_context_t*, cef_string_t*, cef_string_t*, CefContentSettingTypes, CefContentSettingValues, void> _set_content_setting;
+        internal delegate* unmanaged<cef_request_context_t*, cef_setting_observer_t*, cef_registration_t*> _add_setting_observer;
         internal delegate* unmanaged<cef_request_context_t*, CefColorVariant, uint, void> _set_chrome_color_scheme;
         internal delegate* unmanaged<cef_request_context_t*, CefColorVariant> _get_chrome_color_scheme_mode;
         internal delegate* unmanaged<cef_request_context_t*, uint> _get_chrome_color_scheme_color;
@@ -113,6 +115,13 @@ namespace Xilium.CefGlue.Interop
         public static int set_preference(cef_preference_manager_t* self, cef_string_t* name, cef_value_t* value, cef_string_t* error)
         {
             return self->_set_preference(self, name, value, error);
+        }
+        
+        // AddPreferenceObserver
+        
+        public static cef_registration_t* add_preference_observer(cef_preference_manager_t* self, cef_string_t* name, cef_preference_observer_t* observer)
+        {
+            return self->_add_preference_observer(self, name, observer);
         }
         
         // IsSame
@@ -232,6 +241,13 @@ namespace Xilium.CefGlue.Interop
         public static void set_content_setting(cef_request_context_t* self, cef_string_t* requesting_url, cef_string_t* top_level_url, CefContentSettingTypes content_type, CefContentSettingValues value)
         {
             self->_set_content_setting(self, requesting_url, top_level_url, content_type, value);
+        }
+        
+        // AddSettingObserver
+        
+        public static cef_registration_t* add_setting_observer(cef_request_context_t* self, cef_setting_observer_t* observer)
+        {
+            return self->_add_setting_observer(self, observer);
         }
         
         // SetChromeColorScheme

@@ -18,6 +18,15 @@ namespace Xilium.CefGlue.Interop
         internal delegate* unmanaged<cef_preference_manager_t*, int, cef_dictionary_value_t*> _get_all_preferences;
         internal delegate* unmanaged<cef_preference_manager_t*, cef_string_t*, int> _can_set_preference;
         internal delegate* unmanaged<cef_preference_manager_t*, cef_string_t*, cef_value_t*, cef_string_t*, int> _set_preference;
+        internal delegate* unmanaged<cef_preference_manager_t*, cef_string_t*, cef_preference_observer_t*, cef_registration_t*> _add_preference_observer;
+        
+        // GetChromeVariationsAsSwitches
+        [DllImport(libcef.DllName, EntryPoint = "cef_preference_manager_get_chrome_variations_as_switches", CallingConvention = libcef.CEF_CALL)]
+        public static extern void get_chrome_variations_as_switches(cef_string_list* switches);
+        
+        // GetChromeVariationsAsStrings
+        [DllImport(libcef.DllName, EntryPoint = "cef_preference_manager_get_chrome_variations_as_strings", CallingConvention = libcef.CEF_CALL)]
+        public static extern void get_chrome_variations_as_strings(cef_string_list* strings);
         
         // GetGlobalPreferenceManager
         [DllImport(libcef.DllName, EntryPoint = "cef_preference_manager_get_global", CallingConvention = libcef.CEF_CALL)]
@@ -84,6 +93,13 @@ namespace Xilium.CefGlue.Interop
         public static int set_preference(cef_preference_manager_t* self, cef_string_t* name, cef_value_t* value, cef_string_t* error)
         {
             return self->_set_preference(self, name, value, error);
+        }
+        
+        // AddPreferenceObserver
+        
+        public static cef_registration_t* add_preference_observer(cef_preference_manager_t* self, cef_string_t* name, cef_preference_observer_t* observer)
+        {
+            return self->_add_preference_observer(self, name, observer);
         }
         
     }

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright (c) 2009 The Chromium Embedded Framework Authors. All rights
 # reserved. Use of this source code is governed by a BSD-style license that
 # can be found in the LICENSE file.
@@ -12,7 +13,7 @@ from optparse import OptionParser
 if __name__ != "__main__":
     sys.stderr.write('This file cannot be loaded as a module!')
     sys.exit()
-    
+
 
 # parse command-line options
 disc = """
@@ -30,6 +31,8 @@ parser.add_option('--no-backup',
 parser.add_option('-q', '--quiet',
                   action='store_true', dest='quiet', default=False,
                   help='do not output detailed status information')
+parser.add_option("--api-version", help="CEF API version to generate bindings for", dest="apiversion")
+
 (options, args) = parser.parse_args()
 
 # required options: cppheader, cef1 or cef3
@@ -48,7 +51,7 @@ if not options.quiet:
 header = obj_header()
 excluded_files = ['cef_application_mac.h', 'cef_version.h']
 excluded_files += ['cef_thread.h', 'cef_waitable_event.h']
-header.add_directory(options.cppheaderdir, excluded_files)
+header.add_directory(options.cppheaderdir, int(options.apiversion), excluded_files)
 
 writect = 0
 
@@ -56,7 +59,7 @@ if not options.cefgluedir is None:
     # output cefglue interop
     if not options.quiet:
         sys.stdout.write('Generating CefGlue interop files...\n')
-    writect += write_interop(header, options.cefgluedir, not options.nobackup, 'cef3', options.cppheaderdir)
+    writect += write_interop(header, options.cefgluedir, not options.nobackup, 'cef3', options.cppheaderdir, int(options.apiversion))
 
 if not options.quiet:
     sys.stdout.write('Done - Wrote '+str(writect)+' files.\n')
