@@ -246,6 +246,7 @@
     <Compile Include="Interop\Structs\cef_insets_t.cs" />
     <Compile Include="Interop\Structs\cef_task_info_t.cs" />
     <Compile Include="Interop\Structs\cef_touch_handle_state_t.cs" />
+    <Compile Include="Interop\Structs\cef_version_info_t.cs" />
     <Compile Include="Interop\_Platform\NativeMethods.cs" />
     <Compile Include="Interop\_Platform\RECT.cs" />
     <Compile Include="Interop\Base\cef_base_ref_counted_t.cs" />

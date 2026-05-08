@@ -12,6 +12,7 @@ namespace Xilium.CefGlue
 
     public static unsafe class CefRuntime
     {
+        private static cef_version_info_t versionInfo;
         private static readonly CefRuntimePlatform _platform = DetectPlatform();
 
         private static bool _loaded;
@@ -86,7 +87,7 @@ namespace Xilium.CefGlue
 
         #region cef_version
 
-        public static string ChromeVersion
+        public static string ChromeBuildVersion
         {
             get
             {
@@ -94,9 +95,21 @@ namespace Xilium.CefGlue
             }
         }
 
+        public static string ChromeRuntimeVersion
+        {
+            get
+            {
+                return string.Format("{0}.{1}.{2}.{3}", versionInfo.chrome_version_major, versionInfo.cef_version_minor, versionInfo.chrome_version_build, versionInfo.chrome_version_patch);
+            }
+        }
+
         private static void CheckVersion()
         {
             CheckVersionByApiHash();
+
+            versionInfo.size = (nuint)sizeof(cef_version_info_t);
+            fixed (cef_version_info_t* pVersionInfo = &versionInfo)
+                libcef.version_info_all(pVersionInfo);
         }
 
         private static void CheckVersionByApiHash()
