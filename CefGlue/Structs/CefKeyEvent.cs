@@ -121,6 +121,7 @@
         {
             if (ptr == null) throw new ArgumentNullException("ptr");
 
+            ptr->size = (nuint)sizeof(cef_key_event_t);
             ptr->type = EventType;
             ptr->modifiers = Modifiers;
             ptr->windows_key_code = WindowsKeyCode;

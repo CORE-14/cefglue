@@ -53,6 +53,7 @@
     <Compile Include="Classes.Handlers\CefNavigationEntryVisitor.cs" />
     <Compile Include="Classes.Handlers\CefPdfPrintCallback.cs" />
     <Compile Include="Classes.Handlers\CefPermissionHandler.cs" />
+    <Compile Include="Classes.Handlers\CefPreferenceObserver.cs" />
     <Compile Include="Classes.Handlers\CefPrintHandler.cs" />
     <Compile Include="Classes.Handlers\CefReadHandler.cs" />
     <Compile Include="Classes.Handlers\CefRenderHandler.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Classes.Handlers\CefSchemeHandlerFactory.cs" />
     <Compile Include="Classes.Handlers\CefServerHandler.cs" />
     <Compile Include="Classes.Handlers\CefSetCookieCallback.cs" />
+    <Compile Include="Classes.Handlers\CefSettingObserver.cs" />
     <Compile Include="Classes.Handlers\CefStringVisitor.cs" />
     <Compile Include="Classes.Handlers\CefTask.cs" />
     <Compile Include="Classes.Handlers\CefUnresponsiveProcessCallback.cs" />
@@ -244,6 +246,7 @@
     <Compile Include="Interop\Structs\cef_insets_t.cs" />
     <Compile Include="Interop\Structs\cef_task_info_t.cs" />
     <Compile Include="Interop\Structs\cef_touch_handle_state_t.cs" />
+    <Compile Include="Interop\Structs\cef_version_info_t.cs" />
     <Compile Include="Interop\_Platform\NativeMethods.cs" />
     <Compile Include="Interop\_Platform\RECT.cs" />
     <Compile Include="Interop\Base\cef_base_ref_counted_t.cs" />

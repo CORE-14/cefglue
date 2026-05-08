@@ -24,6 +24,8 @@ namespace Xilium.CefGlue.Interop
         internal delegate* unmanaged<cef_display_handler_t*, cef_browser_t*, double, void> _on_loading_progress_change;
         internal delegate* unmanaged<cef_display_handler_t*, cef_browser_t*, IntPtr, CefCursorType, cef_cursor_info_t*, int> _on_cursor_change;
         internal delegate* unmanaged<cef_display_handler_t*, cef_browser_t*, int, int, void> _on_media_access_change;
+        internal delegate* unmanaged<cef_display_handler_t*, cef_browser_t*, cef_rect_t*, int> _on_contents_bounds_change;
+        internal delegate* unmanaged<cef_display_handler_t*, cef_browser_t*, cef_rect_t*, int> _get_root_window_screen_rect;
         
         internal GCHandle _obj;
         
@@ -132,11 +134,25 @@ namespace Xilium.CefGlue.Interop
             obj.on_media_access_change(self, browser, has_video_access, has_audio_access);
         }
         
+        [UnmanagedCallersOnly]
+        public static int on_contents_bounds_change(cef_display_handler_t* self, cef_browser_t* browser, cef_rect_t* new_bounds)
+        {
+            var obj = (CefDisplayHandler)self->_obj.Target;
+            return obj.on_contents_bounds_change(self, browser, new_bounds);
+        }
+        
+        [UnmanagedCallersOnly]
+        public static int get_root_window_screen_rect(cef_display_handler_t* self, cef_browser_t* browser, cef_rect_t* rect)
+        {
+            var obj = (CefDisplayHandler)self->_obj.Target;
+            return obj.get_root_window_screen_rect(self, browser, rect);
+        }
+        
         internal static cef_display_handler_t* Alloc()
         {
             var ptr = (cef_display_handler_t*)NativeMemory.Alloc((UIntPtr)sizeof(cef_display_handler_t));
             *ptr = default(cef_display_handler_t);
-            ptr->_base._size = (UIntPtr)sizeof(cef_display_handler_t);
+            ptr->_base._size = (UIntPtr)sizeof(cef_display_handler_t) - 8;
             ptr->_base._add_ref = (delegate* unmanaged<cef_base_ref_counted_t*, void>)(delegate* unmanaged<cef_display_handler_t*, void>)&add_ref;
             ptr->_base._release = (delegate* unmanaged<cef_base_ref_counted_t*, int>)(delegate* unmanaged<cef_display_handler_t*, int>)&release;
             ptr->_base._has_one_ref = (delegate* unmanaged<cef_base_ref_counted_t*, int>)(delegate* unmanaged<cef_display_handler_t*, int>)&has_one_ref;
@@ -152,6 +168,8 @@ namespace Xilium.CefGlue.Interop
             ptr->_on_loading_progress_change = &on_loading_progress_change;
             ptr->_on_cursor_change = &on_cursor_change;
             ptr->_on_media_access_change = &on_media_access_change;
+            ptr->_on_contents_bounds_change = &on_contents_bounds_change;
+            ptr->_get_root_window_screen_rect = &get_root_window_screen_rect;
             return ptr;
         }
         

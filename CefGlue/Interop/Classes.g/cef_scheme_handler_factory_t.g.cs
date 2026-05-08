@@ -56,7 +56,7 @@ namespace Xilium.CefGlue.Interop
         {
             var ptr = (cef_scheme_handler_factory_t*)NativeMemory.Alloc((UIntPtr)sizeof(cef_scheme_handler_factory_t));
             *ptr = default(cef_scheme_handler_factory_t);
-            ptr->_base._size = (UIntPtr)sizeof(cef_scheme_handler_factory_t);
+            ptr->_base._size = (UIntPtr)sizeof(cef_scheme_handler_factory_t) - 8;
             ptr->_base._add_ref = (delegate* unmanaged<cef_base_ref_counted_t*, void>)(delegate* unmanaged<cef_scheme_handler_factory_t*, void>)&add_ref;
             ptr->_base._release = (delegate* unmanaged<cef_base_ref_counted_t*, int>)(delegate* unmanaged<cef_scheme_handler_factory_t*, int>)&release;
             ptr->_base._has_one_ref = (delegate* unmanaged<cef_base_ref_counted_t*, int>)(delegate* unmanaged<cef_scheme_handler_factory_t*, int>)&has_one_ref;

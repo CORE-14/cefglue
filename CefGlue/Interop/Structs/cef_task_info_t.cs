@@ -10,6 +10,7 @@ namespace Xilium.CefGlue;
 
 internal unsafe struct cef_task_info_t
 {
+    public nuint size;
     public long id;
     public CefTaskType type;
     public int is_killable;

@@ -6,7 +6,9 @@ import sys
 import schema
 import file_util
 import os
+from pcpp.preprocessor import Preprocessor, Macro
 from xml.dom.minidom import getDOMImplementation
+from cef_util import *
 
 #
 # settings
@@ -271,7 +273,8 @@ def make_struct_members(cls):
         result.append('{')
         result.append(indent + 'var ptr = (%s*)NativeMemory.Alloc((UIntPtr)sizeof(%s));' % (iname, iname))
         result.append(indent + '*ptr = default(%s);' % iname)
-        result.append(indent + 'ptr->_base._size = (UIntPtr)sizeof(%s);' % iname)
+        # -8 so we get the proper struct size without the GCHandle we also allocate.
+        result.append(indent + 'ptr->_base._size = (UIntPtr)sizeof(%s) - 8;' % iname)
 
         for func in funcs:
             cast = ""
@@ -790,27 +793,40 @@ def append_xmldoc(result, lines):
     result.append('/// </summary>')
     return
 
+def make_version_cs(header_dir: str, api_version: int):
+    preproc_win = create_preproc_windows(header_dir, api_version)
+    preproc_win.parse("""
+#include "include/cef_version.h"
+#include "include/cef_api_hash.h"
+""")
+    preproc_linux = create_preproc_linux(header_dir, api_version)
+    preproc_linux.parse("#include \"include/cef_api_hash.h\"")
+    preproc_macos = create_preproc_macos(header_dir, api_version)
+    preproc_macos.parse("#include \"include/cef_api_hash.h\"")
 
-def make_version_cs(content, api_hash_content):
+    throw_tokens(preproc_win)
+    throw_tokens(preproc_linux)
+    throw_tokens(preproc_macos)
+
     result = []
 
-    result.append('public const string CEF_VERSION = %s;' % __get_version_constant(content, "CEF_VERSION"))
-    result.append('public const int CEF_VERSION_MAJOR = %s;' % __get_version_constant(content, "CEF_VERSION_MAJOR"))
-    result.append('public const int CEF_COMMIT_NUMBER = %s;' % __get_version_constant(content, "CEF_COMMIT_NUMBER"))
-    result.append('public const string CEF_COMMIT_HASH = %s;' % __get_version_constant(content, "CEF_COMMIT_HASH"))
+    result.append('public const int CEF_API_VERSION = %s;' % api_version)
+
+    result.append('public const string CEF_VERSION = %s;' % eval_macro(preproc_win, "CEF_VERSION"))
+    result.append('public const int CEF_VERSION_MAJOR = %s;' % eval_macro(preproc_win, "CEF_VERSION_MAJOR"))
+    result.append('public const int CEF_COMMIT_NUMBER = %s;' % eval_macro(preproc_win, "CEF_COMMIT_NUMBER"))
+    result.append('public const string CEF_COMMIT_HASH = %s;' % eval_macro(preproc_win, "CEF_COMMIT_HASH"))
     result.append("");
 
-    result.append('public const int CHROME_VERSION_MAJOR = %s;' % __get_version_constant(content, "CHROME_VERSION_MAJOR"))
-    result.append('public const int CHROME_VERSION_MINOR = %s;' % __get_version_constant(content, "CHROME_VERSION_MINOR"))
-    result.append('public const int CHROME_VERSION_BUILD = %s;' % __get_version_constant(content, "CHROME_VERSION_BUILD"))
-    result.append('public const int CHROME_VERSION_PATCH = %s;' % __get_version_constant(content, "CHROME_VERSION_PATCH"))
+    result.append('public const int CHROME_VERSION_MAJOR = %s;' % eval_macro(preproc_win, "CHROME_VERSION_MAJOR"))
+    result.append('public const int CHROME_VERSION_MINOR = %s;' % eval_macro(preproc_win, "CHROME_VERSION_MINOR"))
+    result.append('public const int CHROME_VERSION_BUILD = %s;' % eval_macro(preproc_win, "CHROME_VERSION_BUILD"))
+    result.append('public const int CHROME_VERSION_PATCH = %s;' % eval_macro(preproc_win, "CHROME_VERSION_PATCH"))
     result.append("");
 
-    result.append('public const string CEF_API_HASH_UNIVERSAL = %s;' % __get_version_constant(api_hash_content, "CEF_API_HASH_UNIVERSAL"))
-    result.append("");
-    result.append('public const string CEF_API_HASH_PLATFORM_WIN = %s;' % __get_version_constant(api_hash_content, "CEF_API_HASH_PLATFORM", "WIN"))
-    result.append('public const string CEF_API_HASH_PLATFORM_MACOS = %s;' % __get_version_constant(api_hash_content, "CEF_API_HASH_PLATFORM", "MAC"))
-    result.append('public const string CEF_API_HASH_PLATFORM_LINUX = %s;' % __get_version_constant(api_hash_content, "CEF_API_HASH_PLATFORM", "LINUX"))
+    result.append('public const string CEF_API_HASH_PLATFORM_WIN = %s;' % eval_macro(preproc_win, "CEF_API_HASH_PLATFORM"))
+    result.append('public const string CEF_API_HASH_PLATFORM_MACOS = %s;' % eval_macro(preproc_macos, "CEF_API_HASH_PLATFORM"))
+    result.append('public const string CEF_API_HASH_PLATFORM_LINUX = %s;' % eval_macro(preproc_linux, "CEF_API_HASH_PLATFORM"))
 
     body = []
     body.append('using System;')
@@ -833,23 +849,10 @@ def make_version_cs(content, api_hash_content):
         'body': indent + ('\n'+indent).join(body)
       }
 
-def __get_version_constant(content, name, platform = None):
-    if platform is None:
-        m = re.search('^#define\s+' + name + '\s+(.*?)\n', content, re.MULTILINE)
-        if m is None:
-            raise Exception('Could not find ' + name + ' constant.');
-        value = m.group(1)
-    else:
-        m = re.search('\n#e?l?if defined\(OS_' + platform + '\)\n+#define\s+' + name + '\s+(.*?)\n', content, re.DOTALL)
-        if m is None:
-            raise Exception('Could not find ' + name + ' constant.');
-        value = m.group(1)
-    return value
-
 #
 # Main
 #
-def write_interop(header, filepath, backup, schema_name, cppheaderdir):
+def write_interop(header, filepath, backup, schema_name, cppheaderdir: str, api_version: int):
     writect = 0
 
     project_props_filename = "CefGlue.g.props"
@@ -893,7 +896,17 @@ def write_interop(header, filepath, backup, schema_name, cppheaderdir):
         writect += update_file(None, './' + tmplpath, schema.cpp2csname(cls.get_name()) + ".tmpl.g.cs", content, backup)
 
     # process cef_version.h and cef_api_hash.h
-    content = make_version_cs(read_file(cppheaderdir + '/' + 'cef_version.h'), read_file(cppheaderdir + '/' + 'cef_api_hash.h'),)
+    preproc = Preprocessor()
+    preproc.define("_WIN32")
+    preproc.define("_MSC_VER")
+    preproc.define("__x86_64__")
+    preproc.add_path(cppheaderdir + "/..")
+    preproc.parse("""
+#include "include/cef_version.h"
+#include "include/cef_api_hash.h"
+""")
+    preproc.write()
+    content = make_version_cs(cppheaderdir, api_version)
     writect += update_file(project_props_compile_items, filepath + '/' + schema.libcef_path, schema.libcef_version_filename, content, backup)
 
     # make project props file
@@ -914,7 +927,7 @@ def make_props_file(filelist, basedir):
     documentElement.appendChild(itemGroupElement)
     for x in sorted([os.path.relpath(x, basedir) for x in filelist]):
         compileElement = document.createElementNS(None, "Compile")
-        compileElement.setAttribute("Include", x)
+        compileElement.setAttribute("Include", x.replace("/", "\\"))
         itemGroupElement.appendChild(compileElement)
 
     return documentElement.toprettyxml(indent = "    ", newl = "\n", encoding = None)

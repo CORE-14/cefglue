@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Marshall A. Greenblatt. All rights reserved.
+// Copyright (c) 2025 Marshall A. Greenblatt. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
@@ -35,47 +35,20 @@
 #ifndef CEF_INCLUDE_CEF_VERSION_H_
 #define CEF_INCLUDE_CEF_VERSION_H_
 
-#define CEF_VERSION "131.3.5+g573cec5+chromium-131.0.6778.205"
-#define CEF_VERSION_MAJOR 131
-#define CEF_VERSION_MINOR 3
-#define CEF_VERSION_PATCH 5
-#define CEF_COMMIT_NUMBER 3109
-#define CEF_COMMIT_HASH "573cec5b7b5951d9c70c8d9b094d13b45a19782c"
-#define COPYRIGHT_YEAR 2024
+#define CEF_VERSION "141.0.11+g7e73ac4+chromium-141.0.7390.123"
+#define CEF_VERSION_MAJOR 141
+#define CEF_VERSION_MINOR 0
+#define CEF_VERSION_PATCH 11
+#define CEF_COMMIT_NUMBER 3299
+#define CEF_COMMIT_HASH "7e73ac45f2979537f677e785383a04998f90d51d"
+#define COPYRIGHT_YEAR 2025
 
-#define CHROME_VERSION_MAJOR 131
+#define CHROME_VERSION_MAJOR 141
 #define CHROME_VERSION_MINOR 0
-#define CHROME_VERSION_BUILD 6778
-#define CHROME_VERSION_PATCH 205
+#define CHROME_VERSION_BUILD 7390
+#define CHROME_VERSION_PATCH 123
 
 #define DO_MAKE_STRING(p) #p
 #define MAKE_STRING(p) DO_MAKE_STRING(p)
-
-#ifndef APSTUDIO_HIDDEN_SYMBOLS
-
-#include "include/internal/cef_export.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-// Returns CEF version information for the libcef library. The |entry|
-// parameter describes which version component will be returned:
-// 0 - CEF_VERSION_MAJOR
-// 1 - CEF_VERSION_MINOR
-// 2 - CEF_VERSION_PATCH
-// 3 - CEF_COMMIT_NUMBER
-// 4 - CHROME_VERSION_MAJOR
-// 5 - CHROME_VERSION_MINOR
-// 6 - CHROME_VERSION_BUILD
-// 7 - CHROME_VERSION_PATCH
-///
-CEF_EXPORT int cef_version_info(int entry);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif  // APSTUDIO_HIDDEN_SYMBOLS
 
 #endif  // CEF_INCLUDE_CEF_VERSION_H_

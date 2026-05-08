@@ -1,5 +1,5 @@
 #
-# TODO: 
+# TODO:
 # Copyright (C) CefGlue Project
 #
 
@@ -184,4 +184,6 @@ classdef = {
     # Idk what the above numbers mean. Versioning?
     'CefTaskManager': { 'role': ROLE_PROXY },
     'CefUnresponsiveProcessCallback': { 'role': ROLE_PROXY },
+    'CefPreferenceObserver': { 'role': ROLE_HANDLER },
+    'CefSettingObserver': { 'role': ROLE_HANDLER },
     }

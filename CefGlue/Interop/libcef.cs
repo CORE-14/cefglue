@@ -15,7 +15,7 @@
 
         internal const CallingConvention CEF_CALL = CallingConvention.Cdecl;
 
-        // Windows: CallingConvention.StdCall 
+        // Windows: CallingConvention.StdCall
         //    Unix: CallingConvention.Cdecl
         // FIXME: CEF#598 (http://code.google.com/p/chromiumembedded/issues/detail?id=598)
         internal const CallingConvention CEF_CALLBACK = CallingConvention.Winapi;
@@ -28,8 +28,11 @@
         [DllImport(libcef.DllName, EntryPoint = "cef_version_info", CallingConvention = libcef.CEF_CALL)]
         public static extern int version_info(int entry);
 
+        [DllImport(libcef.DllName, EntryPoint = "cef_version_info_all", CallingConvention = libcef.CEF_CALL)]
+        public static extern void version_info_all(cef_version_info_t* info);
+
         [DllImport(libcef.DllName, EntryPoint = "cef_api_hash", CallingConvention = libcef.CEF_CALL)]
-        public static extern sbyte* api_hash(int entry);
+        public static extern sbyte* api_hash(int version, int entry);
 
         #endregion
     }
