@@ -14,6 +14,8 @@ namespace Xilium.CefGlue.Interop
     [StructLayout(LayoutKind.Sequential, Pack = libcef.ALIGN)]
     internal unsafe struct cef_window_info_t_windows
     {
+        public nuint size;
+
         // Standard parameters required by CreateWindowEx()
         public uint ex_style;
         public cef_string_t window_name;
@@ -31,6 +33,7 @@ namespace Xilium.CefGlue.Interop
         public static cef_window_info_t_windows* Alloc()
         {
             var ptr = (cef_window_info_t_windows*)NativeMemory.AllocZeroed((nuint)sizeof(cef_window_info_t_windows));
+            ptr->size = (nuint)sizeof(cef_window_info_t_windows);
             return ptr;
         }
 
@@ -47,6 +50,7 @@ namespace Xilium.CefGlue.Interop
 
     internal unsafe struct cef_window_info_t_linux
     {
+        public nuint size;
         public cef_string_t window_name;
         public cef_rect_t bounds;
         public IntPtr parent_window;
@@ -60,6 +64,7 @@ namespace Xilium.CefGlue.Interop
         public static cef_window_info_t_linux* Alloc()
         {
             var ptr = (cef_window_info_t_linux*)NativeMemory.AllocZeroed((nuint)sizeof(cef_window_info_t_linux));
+            ptr->size = (nuint)sizeof(cef_window_info_t_linux);
             return ptr;
         }
 
