@@ -33,3 +33,6 @@
 
 .DS_Store
 .directory
+
+# C# Dev Kit cache file
+*.lscache
