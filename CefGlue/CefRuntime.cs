@@ -95,6 +95,9 @@ namespace Xilium.CefGlue
             }
         }
 
+        // CORE-14: alias retained for RobustToolbox compatibility.
+        public static string ChromeVersion => ChromeBuildVersion;
+
         public static string ChromeRuntimeVersion
         {
             get
